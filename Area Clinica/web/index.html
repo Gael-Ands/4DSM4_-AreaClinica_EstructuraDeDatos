@@ -1,31 +1,55 @@
 <!DOCTYPE html>
-<!--
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Html.html to edit this template
--->
-<html>
+<html lang="es">
     <head>
-        <title>TODO supply a title</title>
+        <title>Área clínica</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="style/general.css">
     </head>
     <body>
-        <div>
-            <h1>Area clinica</h1>
-            <p>utilicen su rama que les corresponde, los modulos dividanos en carpeta para que no este todo 
-                junto si tienen dudas pregunten y nos ponemos deacuerdo
-                </p><br>
-                <h2>Modulo | Recepcion y expediente</h2>
-                <a href="">enlace</a><br>
-                <h2>Modulo | Urgencias</h2>
-                <a href="">enlace</a><br>
-                <h2>Modulo | Consulta y Observacion</h2>
-                <a href="">enlace</a><br>
-                <h2>Modulo | Vacunacion y agenda</h2>
-                <a href="">enlace</a><br>
-                <h2>Modulo | Recetas y servicio</h2>
-                <a href="">enlace</a><br>
-                
-        </div>
+        <header class="encabezado-sitio">
+            <div class="contenido-encabezado">
+                <h1 class="titulo-sitio">Área clínica</h1>
+                <nav class="navegacion-modulos" >
+                    <div class="modulo-recepcion"><h3><a href="RecepcionExpediente/recepcion.html">Recepción y Expediente</a></h3></div>
+                    <div class="modulo-urgencias"><h3><a href="Urgencias/urgencias.html">Urgencias</a></h3></div>
+                    <div class="modulo-consulta"><h3><a href="ConsultaObservacion/fila.html">Consulta y Observación</a></h3></div>
+                    <div class="modulo-vacunacion"><h3><a href="VacunacionAgenda/vacunacion.html">Vacunación y Agenda</a></h3></div>
+                    <div class="modulo-recetas"><h3><a href="RecetasServicio/recetas.html">Recetas y Servicio</a></h3></div>
+                </nav>
+            </div>
+        </header>
+
+        <main>
+            <section class="introduccion">
+                <p>utilicen su rama que les corresponde, los modulos dividanos en carpeta para que no este todo junto si tienen dudas pregunten y nos ponemos deacuerdo</p>
+            </section>
+
+            <section aria-labelledby="titulo-modulos">
+                <h2 class="titulo-seccion" id="titulo-modulos">Módulos</h2>
+                <div class="cuadricula-modulos">
+                    <article class="tarjeta-modulo">
+                        <h2>Modulo | Recepcion y expediente</h2>
+                        <a href="RecepcionExpediente/recepcion.html">Abrir módulo</a>
+                    </article>
+                    <article class="tarjeta-modulo">
+                        <h2>Modulo | Urgencias</h2>
+                        <a href="Urgencias/urgencias.html">Abrir módulo</a>
+                    </article>
+                    <article class="tarjeta-modulo">
+                        <h2>Modulo | Consulta y Observacion</h2>
+                        <a href="ConsultaObservacion/fila.html">Abrir módulo</a>
+                    </article>
+                    <article class="tarjeta-modulo">
+                        <h2>Modulo | Vacunacion y agenda</h2>
+                        <a href="VacunacionAgenda/vacunacion.html">Abrir módulo</a>
+                    </article>
+                    <article class="tarjeta-modulo">
+                        <h2>Modulo | Recetas y servicio</h2>
+                        <a href="RecetasServicio/recetas.html">Abrir módulo</a>
+                    </article>
+                </div>
+            </section>
+        </main>
     </body>
 </html>

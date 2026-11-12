@@ -1,0 +1,119 @@
+* {
+    box-sizing: border-box;
+}
+body {
+    margin: 0;
+    background-color: #f3f7f4;
+    color: #293b31;
+    font-family: Arial, sans-serif;
+}
+.encabezado-sitio {
+    width: 100%;
+    padding: 2% 3%;
+    background-color: #205843;
+    color: #ffffff;
+}
+
+.contenido-encabezado,
+main {
+    width: 100%;
+}
+
+.titulo-sitio {
+    text-align: center;
+    margin: 0 0 2%;
+    font-size: 200%;
+}
+
+.navegacion-modulos {
+    display: flex;
+    gap: 1%;
+}
+
+.navegacion-modulos div {
+    flex: 1;
+    border-radius: 30px;
+    background-color: #34745a;
+    transition: background-color 0.2s ease;
+}
+
+.navegacion-modulos div:hover,
+.navegacion-modulos div:focus-within {
+    background-color: #41916d;
+}
+
+.navegacion-modulos h3 {
+    margin: 0;
+    font-size: 80%;
+    font-weight: normal;
+}
+
+.navegacion-modulos a {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    border-radius: inherit;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+}
+
+.navegacion-modulos a:focus-visible,
+.tarjeta-modulo a:focus-visible {
+    outline: 3px solid #f0c75e;
+    outline-offset: 3px;
+}
+
+main {
+    padding: 5%;
+}
+
+.introduccion {
+    margin-bottom: 3%;
+    padding: 2%;
+    border-left: 4px solid #34745a;
+    background-color: #ffffff;
+}
+
+.introduccion p {
+    margin: 0;
+    color: #53645a;
+}
+
+.titulo-seccion {
+    color: #205843;
+    font-size: 150%;
+}
+
+.cuadricula-modulos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2%;
+}
+
+.tarjeta-modulo {
+    padding: 2%;
+    border: 1px solid #dce7df;
+    border-radius: 1%;
+    background-color: #ffffff;
+}
+
+.tarjeta-modulo h2 {
+    margin: 0 0 8%;
+    color: #205843;
+    font-size: 120%;
+}
+
+.tarjeta-modulo a {
+    display: inline-block;
+    padding: 0.65rem 1rem;
+    border-radius: 6px;
+    background-color: #287452;
+    color: #ffffff;
+    font-weight: bold;
+    text-decoration: none;
+    transition: background-color 0.2s ease;
+}
+
+.tarjeta-modulo a:hover {
+    background-color: #205843;
+}
