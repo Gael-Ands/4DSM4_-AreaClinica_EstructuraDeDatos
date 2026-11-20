@@ -4,19 +4,224 @@
 
 body {
     margin: 0;
-    background-color: #f3f7f4;
-    color: #293b31;
+    background:
+        radial-gradient(ellipse at 85% 5%, rgb(91 157 117 / 14%), transparent 34rem),
+        #eef4f0;
+    color: #20372a;
     font-family: Arial, sans-serif;
 }
 
 .encabezado {
-    padding: 2rem;
-    background-color: #205843;
+    padding: 2.25rem 1.5rem 2rem;
+    background: linear-gradient(125deg, #173f30, #28694b 62%, #377b58);
     color: #ffffff;
     text-align: center;
+    box-shadow: 0 8px 26px rgb(23 63 48 / 18%);
 }
 
 .encabezado h1 {
     margin: 0;
+    font-size: clamp(2rem, 5vw, 3rem);
+    letter-spacing: 0.025em;
+}
+
+.encabezado p {
+    margin: 0.55rem 0 0;
+    color: #e0eee4;
+}
+
+.encabezado p {
+    margin: 0.5rem 0 0;
+}
+
+.contenedor {
+    width: min(100% - 2rem, 1100px);
+    margin: 2rem auto;
+}
+
+.panel {
+    margin-bottom: 1.5rem;
+    padding: clamp(1.1rem, 3vw, 1.75rem);
+    background: rgb(255 255 255 / 94%);
+    border: 1px solid #d8e4dc;
+    border-radius: 16px;
+    box-shadow: 0 12px 32px rgb(29 65 45 / 8%);
+}
+
+.panel h2 {
+    margin-top: 0;
+    color: #1d5138;
+    font-size: 1.45rem;
+}
+
+.descripcion {
+    color: #526459;
+    line-height: 1.5;
+}
+
+.rejilla-consultorios {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr));
+    gap: 1rem;
+}
+
+.consultorio {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem;
+    border: 3px solid;
+    border-radius: 14px;
+    background: linear-gradient(165deg, #ffffff, #f8fbf9);
+    box-shadow: 0 5px 16px rgb(29 65 45 / 7%);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.consultorio:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 24px rgb(29 65 45 / 12%);
+}
+
+.consultorio.disponible {
+    border-color: #24804a;
+}
+
+.consultorio.ocupado {
+    border-color: #c33b3b;
+}
+
+.consultorio-encabezado {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+}
+
+.consultorio h3 {
+    margin: 0;
+}
+
+.estado {
+    flex-shrink: 0;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: #edf4ef;
+    font-weight: 700;
+    font-size: 0.85rem;
+}
+
+.disponible .estado {
+    color: #17632e;
+    background: #e7f5eb;
+}
+
+.ocupado .estado {
+    color: #a12622;
+    background: #fff0ef;
+}
+
+.consultorio dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+    margin: 1rem 0;
+}
+
+.consultorio dt {
+    color: #526459;
+    font-size: 0.9rem;
+}
+
+.consultorio dd {
+    margin: 0.25rem 0 0;
+    overflow-wrap: anywhere;
+    font-weight: 700;
+}
+
+.paciente-asignado {
+    margin: 1rem 0;
+    padding: 0.75rem;
+    border: 1px solid #f0d1cf;
+    border-radius: 8px;
+    background: #fff3f3;
+    overflow-wrap: anywhere;
+}
+
+.paciente-asignado h4,
+.paciente-asignado p {
+    margin: 0.25rem 0;
+}
+
+.acciones {
+    margin-top: auto;
+    padding-top: 0.5rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+.acciones form {
+    flex: 1;
+}
+
+.acciones button {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border: 0;
+    border-radius: 6px;
+    background: #205843;
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+    transition: filter 0.18s ease, transform 0.18s ease;
+}
+
+.acciones button:hover:not(:disabled) {
+    filter: brightness(1.08);
+    transform: translateY(-1px);
+}
+
+.acciones .boton-desocupar {
+    background: #a12622;
+}
+
+.acciones button:disabled {
+    cursor: not-allowed;
+    opacity: 0.48;
+}
+
+.mensaje {
+    padding: 0.75rem;
+    border-radius: 6px;
+}
+
+.mensaje.error {
+    color: #8e201d;
+    background: #fff0ef;
+}
+
+.mensaje.exito {
+    color: #17632e;
+    background: #eaf6ed;
+}
+
+.lista-fila li {
+    margin: 0.5rem 0;
+    overflow-wrap: anywhere;
+}
+
+.lista-fila li::marker {
+    color: #258044;
+    font-weight: 700;
+}
+
+@media (max-width: 520px) {
+    .consultorio dl {
+        grid-template-columns: 1fr;
+    }
+
+    .acciones {
+        flex-direction: column;
+    }
 }
 
