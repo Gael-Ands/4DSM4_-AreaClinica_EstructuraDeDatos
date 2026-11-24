@@ -29,7 +29,7 @@ async function cargarPadron() {
         }
 
     } catch (error) {
-        estadoDiv.innerHTML = `<strong> Error al conectar con el servicio: </strong> ${error.message}`;
+        estadoDiv.innerHTML = ` Error al conectar con el servicio:  ${error.message}`;
         console.error(error);
     }
 }
@@ -49,7 +49,7 @@ function buscarPaciente() {
         caja.className = "resultado no-asegurado";
         caja.innerHTML = `
             <h3>Resultado: No asegurado</h3>
-            <p>El NSS <strong>${nssBuscado}</strong> no se encuentra.</p>
+            <p>El NSS ${nssBuscado}no se encuentra.</p>
         `;
         return;
     }
