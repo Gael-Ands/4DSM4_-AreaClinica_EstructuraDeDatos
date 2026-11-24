@@ -1,0 +1,196 @@
+:root {
+    --verde-oscuro: #688F4D;
+    --verde-medio-oscuro: #88B06D;
+    --verde-medio: #A6CC8F;
+    --verde-suave: #C6E6B3;
+    --verde-claro: #DBF2CE;
+    --verde-muy-claro: #EBFAE3;
+    --blanco-menta: #F8FFF5;
+    --texto-oscuro: #2B3D1F;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: linear-gradient(160deg, var(--verde-muy-claro) 0%, var(--verde-claro) 100%);
+    color: var(--texto-oscuro);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1.5rem;
+}
+
+.contenedor-cuestionario {
+    width: 100%;
+    max-width: 620px;
+    background-color: var(--blanco-menta);
+    border: 1.5px solid var(--verde-suave);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(104, 143, 77, 0.14);
+}
+
+.encabezado-form {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-menta);
+    padding: 1.5rem 2rem;
+    border-bottom: 4px solid var(--verde-medio-oscuro);
+}
+
+.encabezado-form h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.25rem;
+}
+
+.encabezado-form p {
+    font-size: 0.9rem;
+    color: var(--verde-muy-claro);
+}
+
+.formulario-paciente {
+    padding: 1.75rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+}
+
+.fila-doble {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.campo {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.campo label {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--verde-oscuro);
+}
+
+.campo input,
+.campo textarea {
+    width: 100%;
+    padding: 0.7rem 0.85rem;
+    font-size: 0.95rem;
+    font-family: inherit;
+    color: var(--texto-oscuro);
+    background-color: var(--verde-muy-claro);
+    border: 1.5px solid var(--verde-suave);
+    border-radius: 10px;
+    transition: border-color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.campo input::placeholder,
+.campo textarea::placeholder {
+    color: var(--verde-medio-oscuro);
+    opacity: 0.85;
+}
+
+.campo input:focus,
+.campo textarea:focus {
+    outline: none;
+    background-color: var(--blanco-menta);
+    border-color: var(--verde-oscuro);
+    box-shadow: 0 0 0 3px var(--verde-claro);
+}
+
+.campo textarea {
+    resize: vertical;
+    min-height: 95px;
+}
+
+.mensaje-estado {
+    padding: 0.75rem 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.mensaje-estado.info {
+    background-color: var(--verde-muy-claro);
+    border: 1px solid var(--verde-medio);
+    color: var(--verde-oscuro);
+}
+
+.mensaje-estado.exito {
+    background-color: var(--verde-claro);
+    border: 1px solid var(--verde-oscuro);
+    color: var(--texto-oscuro);
+}
+
+.mensaje-estado.error {
+    background-color: #fdecea;
+    border: 1px solid #d9534f;
+    color: #8a1f1c;
+}
+
+.acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+}
+
+button {
+    padding: 0.75rem 1.4rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+.btn-primario {
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-menta);
+    border: none;
+}
+
+.btn-primario:hover {
+    background-color: var(--verde-medio-oscuro);
+}
+
+.btn-secundario {
+    background-color: var(--verde-claro);
+    color: var(--verde-oscuro);
+    border: 1.5px solid var(--verde-medio);
+}
+
+.btn-secundario:hover {
+    background-color: var(--verde-suave);
+}
+
+@media (max-width: 560px) {
+    .fila-doble {
+        grid-template-columns: 1fr;
+    }
+
+    .encabezado-form,
+    .formulario-paciente {
+        padding: 1.25rem;
+    }
+
+    .acciones {
+        flex-direction: column-reverse;
+    }
+
+    button {
+        width: 100%;
+    }
+}
