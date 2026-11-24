@@ -1,16 +1,15 @@
-// Estructuras de datos (Diccionarios / Map)
+/**
+ * Archivo: buscar.js
+ * Responsables: Sevilla Lopez Kevin Giovanni [Integrante 2]
+ */
+
 let diccionarioPadron = new Map();      // NSS -> Datos del alumno asegurado
 let diccionarioExpedientes = new Map(); // NSS -> Lista (Array) de atenciones cerradas
 
-/**
- * Función 1: Cargar padrón de asegurados desde el servicio (API)
- * Mantiene respaldo con localStorage (Criterio HU-A15)
- */
 async function cargarPadron() {
     const estadoDiv = document.getElementById("estadoServicio");
 
     try {
-        // Usa la constante BASE definida en config.js
         const respuesta = await fetch(`${BASE}/padron_asegurados`);
 
         if (!respuesta.ok) {
@@ -39,7 +38,6 @@ async function cargarPadron() {
         }
 
     } catch (error) {
-        // Criterio HU-A15: Si el servicio no responde, avisa y el sistema NO se detiene
         const mensajeError = `Aviso: No se pudo conectar con el servicio (${error.message}). Operando con respaldo local.`;
         if (estadoDiv) {
             estadoDiv.innerHTML = `<strong>${mensajeError}</strong>`;
@@ -47,7 +45,6 @@ async function cargarPadron() {
         console.warn(mensajeError);
     }
 
-    // Mezclar con registros locales (pacientes dados de alta en registro.html)
     const pacientesLocales = JSON.parse(localStorage.getItem("padronPacientes")) || [];
     pacientesLocales.forEach(p => {
         const nssLocal = String(p.nss || p.numero || "").trim();
@@ -63,15 +60,11 @@ async function cargarPadron() {
     });
 }
 
-/**
- * Función 2: Buscar paciente en el diccionario de la API y verificar seguro (RN-A01)
- */
 function buscarPaciente() {
     const numero = document.getElementById("numero").value.trim();
     const divEncontrado = document.getElementById("encontrado");
     const divNoEncontrado = document.getElementById("noEncontrado");
 
-    // Ocultar resultados anteriores
     divEncontrado.classList.add("oculto");
     divNoEncontrado.classList.add("oculto");
 
@@ -109,9 +102,6 @@ function buscarPaciente() {
     }
 }
 
-/**
- * Función 3: Agregar atención cerrada al expediente (Historia HU-A12)
- */
 function registrarAtencionEnExpediente(nss, fecha, area, diagnostico, foliosReceta) {
     const areasValidas = ["URG", "MG", "MP"];
     if (!areasValidas.includes(area)) {
@@ -134,9 +124,6 @@ function registrarAtencionEnExpediente(nss, fecha, area, diagnostico, foliosRece
     return true;
 }
 
-/**
- * Función 4: Consultar expediente de un paciente por NSS (Historia HU-A12)
- */
 function consultarExpediente(nss) {
     const nssLimpio = nss ? nss.trim() : document.getElementById("numero").value.trim();
     const cajaExpediente = document.getElementById("cajaExpediente");
@@ -176,10 +163,8 @@ function consultarExpediente(nss) {
 
 // INICIALIZACIÓN Y EVENTOS DEL DOM
 document.addEventListener("DOMContentLoaded", async function() {
-    // 1. Conectar a la API antes de permitir o ejecutar búsquedas
     await cargarPadron();
 
-    // 2. Eventos de botones
     document.getElementById("btnBuscar").addEventListener("click", buscarPaciente);
 
     document.getElementById("btnRegistro").addEventListener("click", function() {
@@ -239,7 +224,6 @@ document.addEventListener("DOMContentLoaded", async function() {
         window.location.href = `${paginas[tipo]}?nss=${encodeURIComponent(numero)}`;
     });
 
-    // 3. Recuperar número después del registro (ya con el padrón cargado)
     const parametros = new URLSearchParams(window.location.search);
     if (parametros.has("numero")) {
         document.getElementById("numero").value = parametros.get("numero");
