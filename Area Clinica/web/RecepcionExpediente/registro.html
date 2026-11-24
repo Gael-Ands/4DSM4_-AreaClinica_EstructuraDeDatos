@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de pacientes</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+
+<div class="contenedor">
+
+    <h1>Registro de pacientes</h1>
+
+    <h2>Nuevo paciente</h2>
+
+    <form id="formRegistro">
+
+        <label>Nombres:</label>
+        <input type="text" id="nombres" required>
+
+        <label>Apellido paterno:</label>
+        <input type="text" id="paterno" required>
+
+        <label>Apellido materno:</label>
+        <input type="text" id="materno" required>
+
+        <button type="submit">
+            Guardar paciente
+        </button>
+
+    </form>
+
+    <div id="resultadoRegistro" class="resultado oculto">
+
+        <h3>¡Paciente registrado!</h3>
+
+        <p>Su número de seguridad social es:</p>
+
+        <h2 id="numeroGenerado"></h2>
+
+        <button type="button" id="btnBuscarNuevo">
+            Regresar y verificar paciente
+        </button>
+
+    </div>
+
+    <button type="button" id="btnRegresar">
+        Regresar al inicio
+    </button>
+
+</div>
+
+<script>
+
+// REGISTRAR PACIENTE
+document.getElementById("formRegistro").addEventListener("submit", function(event) {
+
+    event.preventDefault();
+
+    let pacientes = JSON.parse(
+        localStorage.getItem("padronPacientes")
+    ) || [];
+
+    let nombres = document.getElementById("nombres").value.trim();
+    let paterno = document.getElementById("paterno").value.trim();
+    let materno = document.getElementById("materno").value.trim();
+
+    // GENERAR NSS ALEATORIO
+    let nuevoNumero;
+
+    do {
+        nuevoNumero = String(
+            Math.floor(100000 + Math.random() * 900000)
+        );
+    } while (pacientes.some(function(p) {
+        return p.numero === nuevoNumero;
+    }));
+
+    // CREAR PACIENTE
+    let nuevoPaciente = {
+        numero: nuevoNumero,
+        nombres: nombres,
+        apellidos: paterno + " " + materno
+    };
+
+    // GUARDAR PACIENTE
+    pacientes.push(nuevoPaciente);
+
+    localStorage.setItem(
+        "padronPacientes",
+        JSON.stringify(pacientes)
+    );
+
+    // MOSTRAR RESULTADO
+    document.getElementById("numeroGenerado").textContent = nuevoNumero;
+    document.getElementById("resultadoRegistro").classList.remove("oculto");
+    document.getElementById("formRegistro").classList.add("oculto");
+
+});
+
+// REGRESAR AL INDEX
+document.getElementById("btnRegresar").addEventListener("click", function() {
+    window.location.href = "index.html";
+});
+
+// REGRESAR Y VERIFICAR EL NUEVO PACIENTE
+document.getElementById("btnBuscarNuevo").addEventListener("click", function() {
+    let numero = document.getElementById("numeroGenerado").textContent;
+    window.location.href = "index.html?numero=" + encodeURIComponent(numero);
+});
+
+</script>
+
+</body>
+</html>
