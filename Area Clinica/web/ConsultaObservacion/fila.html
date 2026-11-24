@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consulta y Observación</title>
+    <link rel="stylesheet" href="estilos/fila.css">
+    <link rel="stylesheet" href="estilos/navegacion.css">
+    <script src="funciones/fila.js" defer></script>
 
 <head>
     <meta charset="UTF-8" />
@@ -9,94 +16,13 @@
 </head>
 
 <body>
-    <main class="contenedor-cuestionario">
-        <header class="encabezado-form">
-            <h1>Ingreso de Nuevo Paciente</h1>
-            <p>Módulo de Observaciones y Consultas</p>
-        </header>
-
-        <form id="form-nuevo-paciente" class="formulario-paciente">
-            <div class="fila-doble">
-                <div class="campo">
-                    <label for="folio_admision">Folio de admisión</label>
-                    <input type="text" id="folio_admision" name="folio_admision" placeholder="Ej. ADM-019" required />
-                </div>
-
-                <div class="campo">
-                    <label for="nss">NSS del paciente</label>
-                    <input type="text" id="nss" name="nss" placeholder="Ej. 12345678901" required />
-                </div>
-            </div>
-
-            <div class="campo">
-                <label for="nombre_paciente">Nombre completo del paciente</label>
-                <input type="text" id="nombre_paciente" name="nombre_paciente" placeholder="Nombre y apellidos"
-                    required />
-            </div>
-
-            <div class="fila-doble">
-                <div class="campo">
-                    <label for="clave_medico">Clave de médico asignado</label>
-                    <input type="text" id="clave_medico" name="clave_medico" placeholder="Ej. MED-01" required />
-                </div>
-
-                <div class="campo">
-                    <label for="fecha_ingreso">Fecha de ingreso</label>
-                    <input type="datetime-local" id="fecha_ingreso" name="fecha_ingreso" required />
-                </div>
-            </div>
-
-            <div class="campo">
-                <label for="observaciones">Motivo de consulta / Observaciones</label>
-                <textarea id="observaciones" name="observaciones" rows="4"
-                    placeholder="Describe síntomas iniciales o motivo de ingreso..." required></textarea>
-            </div>
-
-            <div id="mensaje-estado" class="mensaje-estado" hidden></div>
-
-            <div class="acciones">
-                <button type="reset" class="btn-secundario">Limpiar</button>
-                <button type="submit" class="btn-primario">Guardar paciente</button>
-            </div>
-        </form>
-    </main>
-
-    <script>
-        // Cambia BASE_URL por la dirección real del servidor donde corre el SW
-        const BASE_URL = "http://localhost:3000";
-        const ENDPOINT_ADMISIONES = `${BASE_URL}/api/v1/admisiones`;
-
-        const form = document.getElementById("form-nuevo-paciente");
-        const estado = document.getElementById("mensaje-estado");
-
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const datos = Object.fromEntries(new FormData(form).entries());
-            estado.hidden = false;
-            estado.className = "mensaje-estado info";
-            estado.textContent = "Guardando paciente en el servicio web...";
-
-            try {
-                const respuesta = await fetch(ENDPOINT_ADMISIONES, {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(datos)
-                });
-
-                if (!respuesta.ok) {
-                    throw new Error(`Error del servidor (${respuesta.status})`);
-                }
-
-                estado.className = "mensaje-estado exito";
-                estado.textContent = "Paciente registrado correctamente.";
-                form.reset();
-            } catch (error) {
-                estado.className = "mensaje-estado error";
-                estado.textContent = `No se pudo guardar: ${error.message}`;
-            }
-        });
-    </script>
+    <header class="encabezado">
+        <h1>Consulta y Observación</h1>
+        <nav class="indice" aria-label="Índice de páginas">
+            <a href="fila.html" aria-current="page">Fila</a>
+            <a href="gael.jsp">Agregar a fila</a>
+            <a href="rogelio.jsp">Consultas</a>
+        </nav>
+    </header>
 </body>
-
 </html>

@@ -1,0 +1,44 @@
+.indice {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.65rem;
+    max-width: 1100px;
+    margin: 1.25rem auto 0;
+}
+
+.indice a {
+    min-width: 7rem;
+    padding: 0.65rem 1rem;
+    border: 1px solid rgb(255 255 255 / 24%);
+    border-radius: 999px;
+    background: rgb(255 255 255 / 10%);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background-color 0.18s ease, transform 0.18s ease;
+}
+
+.indice a:hover,
+.indice a[aria-current="page"] {
+    background: #ffffff;
+    color: #205843;
+    transform: translateY(-1px);
+}
+
+.indice a:focus-visible {
+    outline: 3px solid #d5efdc;
+    outline-offset: 3px;
+}
+
+@media (max-width: 520px) {
+    .indice {
+        gap: 0.5rem;
+    }
+
+    .indice a {
+        min-width: 0;
+        padding: 0.6rem 0.8rem;
+    }
+}
