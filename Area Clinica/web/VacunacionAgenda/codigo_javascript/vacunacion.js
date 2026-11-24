@@ -1,107 +1,147 @@
-//direccion principal de la API
+// Direccion principal de la API
 const BASE = "https://servicios-proyecto-ed.vercel.app/api/v1";
 
 
-//funcion para buscar los datos del paciente (Datos del paciente, Datos de admision, Datos del doctor)
+// Funcion para buscar los datos del paciente
 async function buscarPaciente() {
-    //captura el nss de la caja de texto
+
+    // Obtener el NSS ingresado por el usuario
     const nssBuscado = document.getElementById("nss").value.trim();
-    //se prepara la etiqueta con id "mensaje" para colocar texto acontinuación
+
+    // Elemento donde mostraremos los mensajes
     const mensaje = document.getElementById("mensaje");
-    //se pregunta si el nss ingresado es de 11 digitos
+
+    // Validar que se haya ingresado un NSS de 11 digitos
     if (!/^\d{11}$/.test(nssBuscado)) {
         mensaje.textContent = "Ingresa un NSS de 11 digitos.";
         return;
     }
-    //se muestra un mensaje para dar a enteder que se esta buscando los datos del paciente
+
+    // Mostrar mensaje mientras se realizan las consultas
     mensaje.textContent = "Consultando informacion del paciente...";
-    //limpia los datos de la consulta anterior
+
+    // Limpiar los datos de una busqueda anterior
     limpiarDatos();
+
     try {
-        //consulta el padron de asegurados
+
+        // Consultar el padron de asegurados
         const respuestaPadron = await fetch(`${BASE}/padron_asegurados`);
-        //consulta las admisiones
+
+        // Consultar las admisiones
         const respuestaAdmisiones = await fetch(`${BASE}/admisiones`);
-        //consulta el catalogo de medicos
+
+        // Consultar el catalogo de medicos
         const respuestaMedicos = await fetch(`${BASE}/catalogo_medicos`);
-        //se comprueba que todas las consultas hayan sido exitosas
+
+        // Comprobar que todas las consultas fueron exitosas
         if (!respuestaPadron.ok || !respuestaAdmisiones.ok || !respuestaMedicos.ok) {
             throw new Error("No fue posible consultar las API.");
         }
-        //convierte la respuestas en formato json
+
+        // Convertir las respuestas a formato JSON
         const jsonPadron = await respuestaPadron.json();
         const jsonAdmisiones = await respuestaAdmisiones.json();
         const jsonMedicos = await respuestaMedicos.json();
-        
-        //en esta seccion se busca los datos de los pacientes
-        //se busca al paciente por su nss
+
+        // ==========================================
+        // 1. BUSCAR LOS DATOS DEL PACIENTE
+        // ==========================================
+
+        // Buscar al paciente por su NSS
         const paciente = jsonPadron.datos.find(registro => String(registro.nss) === nssBuscado);
-        //busca si el paciente existe en el json
+
+        // Comprobar si existe el paciente
         if (!paciente) {
             mensaje.textContent = "El NSS no se encuentra en el padron.";
             limpiarDatos();
             return;
         }
-        //de acuerdo al dato obtenido de "paciente" se recolecta los siguiente datos
+
+        // Colocar los datos personales en el formulario
         document.getElementById("nombre").value = paciente.nombre ?? "";
         document.getElementById("matricula").value = paciente.matricula ?? "";
         document.getElementById("carrera").value = paciente.carrera ?? "";
         document.getElementById("vigente").value = paciente.vigente ?? "";
-        //se crea la variable que determina si el paciente tiene vigencia
+        
+        // Determinar el estatus del paciente
         const vigente = String(paciente.vigente ?? "").toUpperCase();
+
         if (vigente === "S") {
             document.getElementById("estatus").value = "ATENCION CON CARGO AL SEGURO FACULTATIVO";
         } else {
             document.getElementById("estatus").value = "ATENCION PARTICULAR";
         }
         
-        //en esta seccion se busca los datos de admision
-        //busca la admision de acuerdo al nss del paciente
+        // ==========================================
+        // 2. BUSCAR LOS DATOS DE ADMISION
+        // ==========================================
+
+        // Buscar las admisiones correspondientes al NSS
         const admisiones = jsonAdmisiones.datos.filter(registro => String(registro.nss) === nssBuscado);
-        //busca si la admision existe en el json
+
+        // Comprobar si existen admisiones
         if (admisiones.length === 0) {
             mensaje.textContent = "Paciente encontrado, pero no tiene admisiones registradas.";
             limpiarAdmision();
             return;
         }
-        //ordena las admisiones por la fecha y hora
+
+        // Ordenar las admisiones por fecha y hora
         admisiones.sort((a, b) => (`${b.fecha} ${b.hora}`).localeCompare(`${a.fecha} ${a.hora}`));
-        //obetiene la admision mas reciente
+        
+        // Obtener la admision mas reciente
         const admision = admisiones[0];
-        //de acuerdo al dato obtenido de "admision" se recolecta los siguiente datos
+        
+        // Mostrar los datos de admision
         document.getElementById("folio_admision").value = admision.folio_admision ?? "";
         document.getElementById("fecha_admision").value = admision.fecha ?? "";
         document.getElementById("hora_admision").value = admision.hora ?? "";
         document.getElementById("tipo_atencion").value = admision.tipo ?? "";
         document.getElementById("gravedad").value = admision.gravedad ?? "";
-        //se obtiene la clave del medico de la admision
+        
+        // Obtener la clave del medico asignado
         const claveMedico = admision.clave_medico;
+
+        // Mostrar la clave del medico en admisiones
         document.getElementById("clave_medico_admision").value = claveMedico ?? "";
         
-        //en esta seccion se busca los datos del doctor
-        //se busca al doctor del json de acuerdo a su clave
-        const doctor = jsonMedicos.datos.find(registro => registro.clave_medico === claveMedico);
-        //busca si el doctor existe en el json
-        if (!doctor) {
+        // ==========================================
+        // 3. BUSCAR LOS DATOS DEL DOCTOR
+        // ==========================================
+
+        // Buscar al medico en el catalogo utilizando su clave
+        const medico = jsonMedicos.datos.find(registro => registro.clave_medico === claveMedico);
+
+        // Comprobar si se encontro al medico
+        if (!medico) {
             limpiarDoctor();
             mensaje.textContent = "Paciente y admision encontrados, pero no se encontro al medico.";
             return;
         }
-        //de acuerdo al dato obtenido de "doctor" se recolecta los siguiente datos
-        document.getElementById("clave_medico_doc").value = doctor.clave_medico ?? "";
-        document.getElementById("nombre_doc").value = doctor.nombre ?? "";
-        document.getElementById("cedula").value = doctor.cedula ?? "";
-        document.getElementById("especialidad").value = doctor.especialidad ?? "";
-        document.getElementById("area").value = doctor.area ?? "";
         
-        //se muestra el mensaje de los datos encontrador en la etiqueta con id "mensaje"
+        // Mostrar los datos del doctor en el formulario
+        document.getElementById("clave_medico_doc").value = medico.clave_medico ?? "";
+        document.getElementById("nombre_doc").value = medico.nombre ?? "";
+        document.getElementById("cedula").value = medico.cedula ?? "";
+        document.getElementById("especialidad").value = medico.especialidad ?? "";
+        document.getElementById("area").value = medico.area ?? "";
+        
+        // ==========================================
+        // 4. CONFIRMAR LA CONSULTA
+        // ==========================================
+
         mensaje.textContent = "Paciente, admision y doctor encontrados correctamente.";
     } catch (error) {
-        //se muestra el mensaje del error que ocurrio durante el proceso
+        // Mostrar cualquier error de conexion o consulta
         mensaje.textContent = "Error al consultar los servicios: " + error.message;
         console.error("Error en la consulta:", error);
     }
 }
+
+// ==========================================
+// FUNCION PARA LIMPIAR LOS DATOS PERSONALES
+// ==========================================
 
 function limpiarDatos() {
     document.getElementById("nombre").value = "";
@@ -112,6 +152,10 @@ function limpiarDatos() {
     limpiarAdmision();
 }
 
+// ==========================================
+// FUNCION PARA LIMPIAR LOS DATOS DE ADMISION
+// ==========================================
+
 function limpiarAdmision() {
     document.getElementById("folio_admision").value = "";
     document.getElementById("fecha_admision").value = "";
@@ -121,6 +165,10 @@ function limpiarAdmision() {
     document.getElementById("clave_medico_admision").value = "";
     limpiarDoctor();
 }
+
+// ==========================================
+// FUNCION PARA LIMPIAR LOS DATOS DEL DOCTOR
+// ==========================================
 
 function limpiarDoctor() {
     document.getElementById("clave_medico_doc").value = "";
