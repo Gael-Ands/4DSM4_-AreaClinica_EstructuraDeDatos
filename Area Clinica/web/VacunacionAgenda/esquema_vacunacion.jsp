@@ -1,7 +1,7 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ page import="java.time.LocalDate" %>
 <%@ page import="java.util.List" %>
-<%@ page import="modelo.CalculadoraVacunacion" %>
+<%@ page import="Caleb.CalculadoraVacunacion" %>
 <%
     // Asegura que los caracteres especiales (acentos, ñ) se lean bien
     request.setCharacterEncoding("UTF-8");
