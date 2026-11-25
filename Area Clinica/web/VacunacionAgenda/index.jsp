@@ -78,6 +78,26 @@
                             <label for="estatus">Estatus</label>
                             <input type="text" id="estatus" name="estatus" class="form-control" readonly>
                         </div>
+                        <div class="form-group">
+                            <label for="altura">Altura</label>
+                            <input type="text" id="altura" name="altura" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="peso">Peso</label>
+                            <input type="text" id="peso" name="peso" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_de_urgencia">Tipo de Urgencia</label>
+                            <input type="text" id="tipo_de_urgencia" name="tipo_de_urgencia" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo_de_sangre">Tipo de Sangre</label>
+                            <input type="text" id="tipo_de_sangre" name="tipo_de_sangre" class="form-control" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <input type="text" id="descripcion" name="descripcion" class="form-control" readonly>
+                        </div>
                     </div>
                 </div>
 
