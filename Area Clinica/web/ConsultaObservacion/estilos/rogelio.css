@@ -1,0 +1,161 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    background-color: #f3f7f4;
+    color: #293b31;
+    font-family: Arial, sans-serif;
+}
+
+.encabezado {
+    padding: 2rem;
+    background-color: #205843;
+    color: #ffffff;
+    text-align: center;
+}
+
+.encabezado h1 {
+    margin: 0;
+}
+
+.encabezado p {
+    margin: 0.5rem 0 0;
+}
+
+.contenedor {
+    width: min(100% - 2rem, 720px);
+    margin: 2.5rem auto;
+}
+
+.panel-consulta,
+.resultado {
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border: 1px solid #d5e1d9;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgb(32 88 67 / 8%);
+}
+
+.panel-consulta > h2,
+.resultado h2 {
+    margin-top: 0;
+}
+
+.descripcion {
+    color: #526459;
+    line-height: 1.5;
+}
+
+#formulario-nss label {
+    display: block;
+    margin: 1.5rem 0 0.5rem;
+    font-weight: 700;
+}
+
+.controles-formulario {
+    display: flex;
+    gap: 0.75rem;
+}
+
+#nss {
+    flex: 1;
+    min-width: 0;
+    padding: 0.75rem;
+    border: 1px solid #9aada1;
+    border-radius: 6px;
+    color: inherit;
+    font: inherit;
+}
+
+#nss:focus {
+    border-color: #205843;
+    outline: 3px solid rgb(32 88 67 / 18%);
+}
+
+#boton-buscar,
+.resultado button {
+    padding: 0.75rem 1.25rem;
+    border: 0;
+    border-radius: 6px;
+    background-color: #205843;
+    color: #ffffff;
+    cursor: pointer;
+    font: inherit;
+    font-weight: 700;
+}
+
+#boton-buscar:hover:not(:disabled),
+.resultado button:hover {
+    background-color: #174430;
+}
+
+.resultado form {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.25rem;
+}
+
+#boton-buscar:disabled {
+    cursor: wait;
+    opacity: 0.7;
+}
+
+#ayuda-nss {
+    display: block;
+    margin-top: 0.5rem;
+    color: #526459;
+}
+
+.mensaje {
+    min-height: 1.5rem;
+    margin: 1rem 0 0;
+}
+
+.mensaje[data-estado="error"] {
+    color: #a12622;
+}
+
+.mensaje[data-estado="exito"] {
+    color: #205843;
+}
+
+.resultado {
+    margin-top: 1rem;
+    background-color: #f8fbf9;
+    box-shadow: none;
+}
+
+.resultado dl {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1rem;
+    margin: 0;
+}
+
+.resultado dl div {
+    min-width: 0;
+}
+
+.resultado dt {
+    color: #526459;
+    font-size: 0.9rem;
+}
+
+.resultado dd {
+    margin: 0.25rem 0 0;
+    overflow-wrap: anywhere;
+    font-weight: 700;
+}
+
+@media (max-width: 520px) {
+    .controles-formulario {
+        flex-direction: column;
+    }
+
+    .resultado dl {
+        grid-template-columns: 1fr;
+    }
+}
+
