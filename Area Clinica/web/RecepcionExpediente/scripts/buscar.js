@@ -87,6 +87,12 @@ function buscarPaciente() {
             `NSS: ${paciente.nss} | Nombre: ${paciente.nombre} | ` +
             `Matrícula: ${paciente.matricula} | Carrera: ${paciente.carrera} | ` +
             `Estatus: ${estatusSeguro}`;
+            
+        document.getElementById("nss").value = paciente.nss || "";
+        document.getElementById("nombre").value = paciente.nombre || "";
+        document.getElementById("matricula").value = paciente.matricula || "";
+        document.getElementById("carrera").value = paciente.carrera || "";
+        document.getElementById("estatus").value = estatusSeguro;
 
         sessionStorage.setItem("pacienteVerificado", numero);
         sessionStorage.setItem("datosPacienteActual", JSON.stringify({
