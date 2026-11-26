@@ -1,0 +1,86 @@
+/**
+ * Archivo: estilos.css
+ * Responsables: Juarez Prado Oliver y Guijarro Delgado Andrea Gissel [Integrantes 3 y 4]
+ */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f2f6f3;
+    margin: 0;
+    padding: 30px;
+}
+
+.contenedor {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 30px;
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+}
+
+h1, h2 {
+    text-align: center;
+    color: #315d4b;
+}
+
+h3 {
+    color: #315d4b;
+}
+
+label {
+    display: block;
+    margin-top: 18px;
+    font-weight: bold;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px;
+    margin-top: 7px;
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+    border-radius: 6px;
+    font-size: 15px;
+}
+
+textarea {
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 18px;
+    border: none;
+    border-radius: 6px;
+    background-color: #477c62;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #315d4b;
+}
+
+.resultado {
+    padding: 15px;
+    margin-top: 20px;
+    border-radius: 8px;
+    background-color: #e8f4ec;
+}
+
+#noEncontrado {
+    background-color: #fff0e5;
+}
+
+.oculto {
+    display: none;
+}
+
+hr {
+    margin-top: 30px;
+    border: 0;
+    border-top: 1px solid #ddd;
+}
