@@ -6,6 +6,16 @@
 let diccionarioPadron = new Map();      // NSS -> Datos del alumno asegurado
 let diccionarioExpedientes = new Map(); // NSS -> Lista (Array) de atenciones cerradas
 
+function cargarExpedientes() {
+    const guardados = JSON.parse(localStorage.getItem("expedientesClinicos")) || {};
+    diccionarioExpedientes = new Map(Object.entries(guardados));
+}
+
+function guardarExpedientes() {
+    const objetoPlano = Object.fromEntries(diccionarioExpedientes);
+    localStorage.setItem("expedientesClinicos", JSON.stringify(objetoPlano));
+}
+
 async function cargarPadron() {
     const estadoDiv = document.getElementById("estadoServicio");
 
@@ -109,29 +119,38 @@ function buscarPaciente() {
 }
 
 function registrarAtencionEnExpediente(nss, fecha, area, diagnostico, foliosReceta) {
+    cargarExpedientes(); 
+
     const areasValidas = ["URG", "MG", "MP"];
     if (!areasValidas.includes(area)) {
-        console.error("Área no válida para el expediente:", area);
+        console.error("Área no válida para el expediente (RN-A06):", area);
         return false;
     }
 
-    if (!diccionarioExpedientes.has(nss)) {
-        diccionarioExpedientes.set(nss, []);
+    const nssLimpio = String(nss).trim();
+    if (!diccionarioExpedientes.has(nssLimpio)) {
+        diccionarioExpedientes.set(nssLimpio, []);
     }
 
     const nuevaAtencion = {
-        fecha: fecha,
-        area: area,
-        diagnostico: diagnostico,
+        fecha: fecha,                
+        area: area,                 
+        diagnostico: diagnostico,    
         folios_receta: foliosReceta || []
     };
 
-    diccionarioExpedientes.get(nss).push(nuevaAtencion);
+    diccionarioExpedientes.get(nssLimpio).push(nuevaAtencion);
+    guardarExpedientes();
     return true;
 }
 
 function consultarExpediente(nss) {
-    const nssLimpio = nss ? nss.trim() : document.getElementById("numero").value.trim();
+    cargarExpedientes();
+
+    const nssLimpio = typeof nss === "string" && nss.trim() !== ""
+        ? nss.trim()
+        : document.getElementById("numero").value.trim();
+
     const cajaExpediente = document.getElementById("cajaExpediente");
 
     if (!nssLimpio) {
@@ -142,13 +161,13 @@ function consultarExpediente(nss) {
     const historial = diccionarioExpedientes.get(nssLimpio) || [];
 
     if (cajaExpediente) {
-        cajaExpediente.style.display = "block";
+        cajaExpediente.classList.remove("oculto");
         if (historial.length === 0) {
             cajaExpediente.innerHTML = `<p>El paciente con NSS <strong>${nssLimpio}</strong> no tiene atenciones previas registradas.</p>`;
         } else {
             let html = `<h3>Expediente Clínico - NSS: ${nssLimpio}</h3><ul>`;
             historial.forEach((atencion, index) => {
-                const recetasTexto = atencion.folios_receta.length > 0
+                const recetasTexto = atencion.folios_receta && atencion.folios_receta.length > 0
                     ? atencion.folios_receta.join(", ")
                     : "Sin receta";
                 html += `
@@ -169,9 +188,15 @@ function consultarExpediente(nss) {
 
 // INICIALIZACIÓN Y EVENTOS DEL DOM
 document.addEventListener("DOMContentLoaded", async function() {
+    cargarExpedientes();
     await cargarPadron();
 
     document.getElementById("btnBuscar").addEventListener("click", buscarPaciente);
+
+    const btnExp = document.getElementById("btnConsultarExpediente");
+    if (btnExp) {
+        btnExp.addEventListener("click", () => consultarExpediente());
+    }
 
     document.getElementById("btnRegistro").addEventListener("click", function() {
         window.location.href = "registro.html";

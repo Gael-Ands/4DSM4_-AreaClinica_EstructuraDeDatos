@@ -29,6 +29,10 @@
         Verificar número
     </button>
 
+    <button type="button" id="btnConsultarExpediente">
+        Consultar expediente
+    </button>
+
     <div id="encontrado" class="resultado oculto">
         <h3>Paciente registrado correctamente</h3>
         <p id="datosPaciente"></p>
@@ -43,9 +47,12 @@
         </button>
     </div>
 
+    <!-- Contenedor para mostrar el expediente clínico (HU-A12) -->
+    <div id="cajaExpediente" class="resultado oculto"></div>
+
     <hr>
     
-    <form action="Transferir_datos_Servlet">
+    <form id="formAtencion">
 
         <h2>Datos de atención</h2>
         
@@ -95,8 +102,8 @@
         <label>Descripción del motivo de atención:</label>
         <textarea id="descripcion" rows="4" placeholder="Escribe el motivo de atención..."></textarea>
 
-        <button type="submit" id="btnContinuar">
-            <a href="Vacunacion/index.jsp">Holaa</a>
+        <button type="button" id="btnContinuar">
+            Continuar a atención
         </button>
     
     </form>
@@ -105,7 +112,6 @@
 
 <script src="scripts/config.js"></script>
 <script src="scripts/buscar.js"></script>
-<script src="scripts/redirigir_vacunacion_agenda.js"></script>
 
 </body>
 </html>
