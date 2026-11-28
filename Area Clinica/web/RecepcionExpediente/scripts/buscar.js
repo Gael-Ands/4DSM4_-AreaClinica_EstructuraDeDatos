@@ -6,14 +6,16 @@
 let diccionarioPadron = new Map();      // NSS -> Datos del alumno asegurado
 let diccionarioExpedientes = new Map(); // NSS -> Lista (Array) de atenciones cerradas
 
-function cargarExpedientes() {
-    const guardados = JSON.parse(localStorage.getItem("expedientesClinicos")) || {};
-    diccionarioExpedientes = new Map(Object.entries(guardados));
+function cargarExpedientesLocales() {
+    const guardado = JSON.parse(localStorage.getItem("expedientesClinicos")) || [];
+    diccionarioExpedientes = new Map(guardado);
 }
 
-function guardarExpedientes() {
-    const objetoPlano = Object.fromEntries(diccionarioExpedientes);
-    localStorage.setItem("expedientesClinicos", JSON.stringify(objetoPlano));
+function guardarExpedientesLocales() {
+    localStorage.setItem(
+        "expedientesClinicos",
+        JSON.stringify(Array.from(diccionarioExpedientes.entries()))
+    );
 }
 
 async function cargarPadron() {
@@ -119,38 +121,35 @@ function buscarPaciente() {
 }
 
 function registrarAtencionEnExpediente(nss, fecha, area, diagnostico, foliosReceta) {
-    cargarExpedientes(); 
-
+    cargarExpedientesLocales();
+    const nssLimpio = String(nss).trim();
     const areasValidas = ["URG", "MG", "MP"];
+
     if (!areasValidas.includes(area)) {
         console.error("Área no válida para el expediente (RN-A06):", area);
         return false;
     }
 
-    const nssLimpio = String(nss).trim();
     if (!diccionarioExpedientes.has(nssLimpio)) {
         diccionarioExpedientes.set(nssLimpio, []);
     }
 
     const nuevaAtencion = {
-        fecha: fecha,                
-        area: area,                 
-        diagnostico: diagnostico,    
+        fecha: fecha,
+        area: area,
+        diagnostico: diagnostico,
         folios_receta: foliosReceta || []
     };
 
     diccionarioExpedientes.get(nssLimpio).push(nuevaAtencion);
-    guardarExpedientes();
+    guardarExpedientesLocales();
     return true;
 }
 
 function consultarExpediente(nss) {
-    cargarExpedientes();
-
-    const nssLimpio = typeof nss === "string" && nss.trim() !== ""
-        ? nss.trim()
-        : document.getElementById("numero").value.trim();
-
+    cargarExpedientesLocales();
+    const inputNumero = document.getElementById("numero");
+    const nssLimpio = nss ? String(nss).trim() : (inputNumero ? inputNumero.value.trim() : "");
     const cajaExpediente = document.getElementById("cajaExpediente");
 
     if (!nssLimpio) {
@@ -167,7 +166,7 @@ function consultarExpediente(nss) {
         } else {
             let html = `<h3>Expediente Clínico - NSS: ${nssLimpio}</h3><ul>`;
             historial.forEach((atencion, index) => {
-                const recetasTexto = atencion.folios_receta && atencion.folios_receta.length > 0
+                const recetasTexto = atencion.folios_receta.length > 0
                     ? atencion.folios_receta.join(", ")
                     : "Sin receta";
                 html += `
@@ -188,75 +187,84 @@ function consultarExpediente(nss) {
 
 // INICIALIZACIÓN Y EVENTOS DEL DOM
 document.addEventListener("DOMContentLoaded", async function() {
-    cargarExpedientes();
+    cargarExpedientesLocales();
     await cargarPadron();
 
-    document.getElementById("btnBuscar").addEventListener("click", buscarPaciente);
-
-    const btnExp = document.getElementById("btnConsultarExpediente");
-    if (btnExp) {
-        btnExp.addEventListener("click", () => consultarExpediente());
+    const btnBuscar = document.getElementById("btnBuscar");
+    if (btnBuscar) {
+        btnBuscar.addEventListener("click", buscarPaciente);
     }
 
-    document.getElementById("btnRegistro").addEventListener("click", function() {
-        window.location.href = "registro.html";
-    });
+    const btnExpediente = document.getElementById("btnExpediente");
+    if (btnExpediente) {
+        btnExpediente.addEventListener("click", () => consultarExpediente());
+    }
 
-    document.getElementById("btnContinuar").addEventListener("click", function() {
-        const numero = document.getElementById("numero").value.trim();
-        const verificado = sessionStorage.getItem("pacienteVerificado");
+    const btnRegistro = document.getElementById("btnRegistro");
+    if (btnRegistro) {
+        btnRegistro.addEventListener("click", function() {
+            window.location.href = "registro.html";
+        });
+    }
 
-        if (!verificado || verificado !== numero) {
-            alert("Primero verifica al paciente");
-            return;
-        }
+    const btnContinuar = document.getElementById("btnContinuar");
+    if (btnContinuar) {
+        btnContinuar.addEventListener("click", function() {
+            const numero = document.getElementById("numero").value.trim();
+            const verificado = sessionStorage.getItem("pacienteVerificado");
 
-        const tipo = document.getElementById("tipo").value;
-        const altura = document.getElementById("altura").value;
-        const peso = document.getElementById("peso").value;
-        const sangre = document.getElementById("sangre").value;
-        const descripcion = document.getElementById("descripcion").value;
+            if (!verificado || verificado !== numero) {
+                alert("Primero verifica al paciente");
+                return;
+            }
 
-        if (!tipo || !altura || !peso || !sangre || !descripcion.trim()) {
-            alert("Completa todos los datos de atención");
-            return;
-        }
+            const tipo = document.getElementById("tipo").value;
+            const altura = document.getElementById("altura").value;
+            const peso = document.getElementById("peso").value;
+            const sangre = document.getElementById("sangre").value;
+            const descripcion = document.getElementById("descripcion").value;
 
-        if (Number(altura) <= 0 || Number(peso) <= 0) {
-            alert("Ingresa valores válidos mayores a 0 para altura y peso");
-            return;
-        }
+            if (!tipo || !altura || !peso || !sangre || !descripcion.trim()) {
+                alert("Completa todos los datos de atención");
+                return;
+            }
 
-        const paginas = {
-            urgencias: "urgencias.html",
-            consultas: "consultas.html",
-            vacunacion: "vacunacion.html"
-        };
+            if (Number(altura) <= 0 || Number(peso) <= 0) {
+                alert("Ingresa valores válidos mayores a 0 para altura y peso");
+                return;
+            }
 
-        if (!paginas[tipo]) {
-            alert("Selecciona un tipo de atención válido");
-            return;
-        }
+            const paginas = {
+                urgencias: "urgencias.html",
+                consultas: "consultas.html",
+                vacunacion: "vacunacion.html"
+            };
 
-        const pacienteActual = JSON.parse(sessionStorage.getItem("datosPacienteActual")) || {};
+            if (!paginas[tipo]) {
+                alert("Selecciona un tipo de atención válido");
+                return;
+            }
 
-        const datosAtencion = {
-            numero: numero,
-            paciente: pacienteActual,
-            tipo: tipo,
-            altura: altura,
-            peso: peso,
-            sangre: sangre,
-            descripcion: descripcion.trim()
-        };
+            const pacienteActual = JSON.parse(sessionStorage.getItem("datosPacienteActual")) || {};
 
-        sessionStorage.setItem("datosAtencion", JSON.stringify(datosAtencion));
+            const datosAtencion = {
+                numero: numero,
+                paciente: pacienteActual,
+                tipo: tipo,
+                altura: altura,
+                peso: peso,
+                sangre: sangre,
+                descripcion: descripcion.trim()
+            };
 
-        window.location.href = `${paginas[tipo]}?nss=${encodeURIComponent(numero)}`;
-    });
+            sessionStorage.setItem("datosAtencion", JSON.stringify(datosAtencion));
+
+            window.location.href = `${paginas[tipo]}?nss=${encodeURIComponent(numero)}`;
+        });
+    }
 
     const parametros = new URLSearchParams(window.location.search);
-    if (parametros.has("numero")) {
+    if (parametros.has("numero") && document.getElementById("numero")) {
         document.getElementById("numero").value = parametros.get("numero");
         buscarPaciente();
     }
